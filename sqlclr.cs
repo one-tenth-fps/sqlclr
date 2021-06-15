@@ -65,6 +65,7 @@ public class NetUtils
         SqlString Method,
         SqlString Headers,
         SqlChars Request,
+        SqlInt32 TimeoutSeconds,
         out SqlInt32 StatusCode,
         out SqlChars Response)
     {
@@ -93,6 +94,13 @@ public class NetUtils
                         request.Headers.Add(headerName, headerValue);
                 }
             }
+        }
+
+        if (!TimeoutSeconds.IsNull)
+        {
+            int TimeoutMsec = (int)TimeoutSeconds * 1000;
+            request.Timeout = TimeoutMsec;
+            request.ReadWriteTimeout = TimeoutMsec;
         }
 
         if (!Request.IsNull)
